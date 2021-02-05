@@ -49,7 +49,7 @@ router.post('/generateAccessToken', (req, res) => {
       chekc: true
     };
     const token = jwt.sign(payload, SECRET_TOKEN, {
-      expiresIn: '1d' // 5 minutos
+      expiresIn: '15d' // 5 minutos
     });
     res.send({
       message: 'Autenticación correcta',
