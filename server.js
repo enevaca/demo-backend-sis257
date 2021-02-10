@@ -15,6 +15,7 @@ app.use(cors());
 // Routes
 app.use('/api/tasks', require('./app/routes/task.routes'));
 app.use('/api/users', require('./app/routes/user.routes'));
+app.use('/api/type_tasks', require('./app/routes/type_task.routes'));
 
 // Static files
 app.use(express.static(__dirname + '/app/public'));

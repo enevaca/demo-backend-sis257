@@ -1,4 +1,4 @@
-const Task = require('../models/task.model');
+const TypeTask = require('../models/type_task.model');
 
 exports.create = (req, res) => {
   if (!req.body) {
@@ -7,13 +7,11 @@ exports.create = (req, res) => {
     });
   }
 
-  const task = new Task({
-    nombre: req.body.nombre,
-    descripcion: req.body.descripcion,
-    id_tipo_tarea: req.body.id_tipo_tarea
+  const typeTask = new TypeTask({
+    descripcion: req.body.descripcion
   });
 
-  Task.create(task, (err, data) => {
+  TypeTask.create(typeTask, (err, data) => {
     if (err)
       res.status(500).send({
         message: err.message
@@ -23,16 +21,16 @@ exports.create = (req, res) => {
 };
 
 exports.finOne = (req, res) => {
-  Task.findById(req.params.taskId, (err, data) => {
+  TypeTask.findById(req.params.typeTaskId, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Tarea no encontrada con id ${req.params.taskId}`
+          message: `Tarea no encontrada con id ${req.params.typeTaskId}`
         });
       }
       else {
         res.status(500).send({
-          message: `Error al requerir la tarea con id ${req.params.taskId}`
+          message: `Error al requerir la tarea con id ${req.params.typeTaskId}`
         });
       }
     }
@@ -41,7 +39,7 @@ exports.finOne = (req, res) => {
 };
 
 exports.finAll = (req, res) => {
-  Task.getAll((err, data) => {
+  TypeTask.getAll((err, data) => {
     if (err) {
       res.status(500).send({
         message: err.message
@@ -58,16 +56,16 @@ exports.update = (req, res) => {
     });
   }
 
-  Task.updateById(req.params.taskId, new Task(req.body), (err, data) => {
+  TypeTask.updateById(req.params.typeTaskId, new TypeTask(req.body), (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Tarea no encontrada con id ${req.params.taskId}`
+          message: `Tarea no encontrada con id ${req.params.typeTaskId}`
         });
       }
       else {
         res.status(500).send({
-          message: `Error al requerir la tarea con id ${req.params.taskId}`
+          message: `Error al requerir la tarea con id ${req.params.typeTaskId}`
         });
       }
     }
@@ -76,16 +74,16 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-  Task.remove(req.params.taskId, (err, data) => {
+  TypeTask.remove(req.params.typeTaskId, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Tarea no encontrada con id ${req.params.taskId}`
+          message: `Tarea no encontrada con id ${req.params.typeTaskId}`
         });
       }
       else {
         res.status(500).send({
-          message: `Error al requerir la tarea con id ${req.params.taskId}`
+          message: `Error al requerir la tarea con id ${req.params.typeTaskId}`
         });
       }
     }
@@ -94,7 +92,7 @@ exports.delete = (req, res) => {
 };
 
 exports.deleteAll = (req, res) => {
-  Task.removeAll((err, data) => {
+  TypeTask.removeAll((err, data) => {
     if (err) {
       res.status(500).send({
         message: `Error al requerir las tareas`

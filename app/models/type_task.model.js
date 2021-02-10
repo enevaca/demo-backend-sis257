@@ -1,27 +1,25 @@
 const sql = require('./db');
 
-class Task {
-  constructor(task) {
-    this.nombre = task.nombre;
-    this.descripcion = task.descripcion;
-    this.id_tipo_tarea = task.id_tipo_tarea;
+class TypeTask {
+  constructor(type_task) {
+    this.descripcion = type_task.descripcion;
   }
 
-  static create = (newTask, result) => {
-    sql.query("INSERT INTO tareas SET ?", newTask, (err, res) => {
+  static create = (newTypeTask, result) => {
+    sql.query("INSERT INTO tipo_tareas SET ?", newTypeTask, (err, res) => {
       if (err) {
         console.log("error", err);
         result(err, null);
         return;
       }
 
-      console.log("Tarea creada", { id: res.insertId });
-      result(null, { id: res.insertId, ...newTask });
+      console.log("Tipo Tarea creada", { id: res.insertId });
+      result(null, { id: res.insertId, ...newTypeTask });
     })
   }
 
   static findById = (taskId, result) => {
-    sql.query(`SELECT * FROM tareas WHERE id = ${taskId}`, (err, res) => {
+    sql.query(`SELECT * FROM tipo_tareas WHERE id = ${taskId}`, (err, res) => {
       if (err) {
         console.log("error", err);
         result(err, null);
@@ -29,7 +27,7 @@ class Task {
       }
 
       if (res.length) {
-        console.log("tarea encontrada", res[0]);
+        console.log("tipo tarea encontrada", res[0]);
         result(null, res[0]);
         return;
       }
@@ -39,21 +37,21 @@ class Task {
   }
 
   static getAll = result => {
-    sql.query(`SELECT t.*,tp.descripcion as tipo_tarea FROM tareas t INNER JOIN tipo_tareas tp ON t.id_tipo_tarea=tp.id ORDER BY t.id DESC`, (err, res) => {
+    sql.query(`SELECT * FROM tipo_tareas`, (err, res) => {
       if (err) {
         console.log("error", err);
         result(err, null);
         return;
       }
 
-      console.log("lista de tareas");
+      console.log("lista de tipo_tareas");
       result(null, res);
     });
   }
 
-  static updateById = (id, task, result) => {
-    sql.query("UPDATE tareas SET nombre = ?, descripcion = ?, id_tipo_tarea = ? WHERE id = ?",
-      [task.nombre, task.descripcion, task.id_tipo_tarea, id], (err, res) => {
+  static updateById = (id, type_task, result) => {
+    sql.query("UPDATE tipo_tareas SET descripcion = ? WHERE id = ?",
+      [type_task.descripcion, id], (err, res) => {
         if (err) {
           console.log("error", err);
           result(err, null);
@@ -65,13 +63,13 @@ class Task {
           return;
         }
 
-        console.log("tarea actualizada", { id: id, ...task });
-        result(null, { id: id, ...task });
+        console.log("tarea actualizada", { id: id, ...type_task });
+        result(null, { id: id, ...type_task });
       });
   }
 
   static remove = (id, result) => {
-    sql.query("DELETE FROM tareas WHERE id = ?", id, (err, res) => {
+    sql.query("DELETE FROM tipo_tareas WHERE id = ?", id, (err, res) => {
       if (err) {
         console.log("error", err);
         result(err, null);
@@ -89,17 +87,17 @@ class Task {
   }
 
   static removeAll = result => {
-    sql.query("DELETE FROM tareas", (err, res) => {
+    sql.query("DELETE FROM tipo_tareas", (err, res) => {
       if (err) {
         console.log("error", err);
         result(err, null);
         return;
       }
 
-      console.log(`${res.affectedRows} tareas eliminadas`);
+      console.log(`${res.affectedRows} tipo_tareas eliminadas`);
       result(null, res);
     });
   }
 }
 
-module.exports = Task;
+module.exports = TypeTask;
