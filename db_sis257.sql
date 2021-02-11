@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-02-2021 a las 23:42:11
+-- Tiempo de generación: 11-02-2021 a las 04:03:45
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.1
 
@@ -30,16 +30,39 @@ SET time_zone = "+00:00";
 CREATE TABLE `tareas` (
   `id` int(11) NOT NULL,
   `nombre` varchar(250) NOT NULL,
-  `descripcion` varchar(250) NOT NULL
+  `descripcion` varchar(250) NOT NULL,
+  `id_tipo_tarea` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tareas`
 --
 
-INSERT INTO `tareas` (`id`, `nombre`, `descripcion`) VALUES
-(1, 'tarea 1', 'defff'),
-(2, 'tarea 2', 'dddddcc');
+INSERT INTO `tareas` (`id`, `nombre`, `descripcion`, `id_tipo_tarea`) VALUES
+(1, 'tarea 1', 'defff', 3),
+(2, 'tarea 3', 'heroku', 2),
+(5, 'tarea 5', 'defff', 3),
+(6, 'tarea 6', 'defff', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_tareas`
+--
+
+CREATE TABLE `tipo_tareas` (
+  `id` int(11) NOT NULL,
+  `descripcion` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `tipo_tareas`
+--
+
+INSERT INTO `tipo_tareas` (`id`, `descripcion`) VALUES
+(1, 'Reunion'),
+(2, 'Prácticas'),
+(3, 'Ejercicios');
 
 -- --------------------------------------------------------
 
@@ -69,6 +92,13 @@ INSERT INTO `usuarios` (`id`, `usuario`, `clave`, `rol`) VALUES
 -- Indices de la tabla `tareas`
 --
 ALTER TABLE `tareas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_tareas_tipo_tareas` (`id_tipo_tarea`);
+
+--
+-- Indices de la tabla `tipo_tareas`
+--
+ALTER TABLE `tipo_tareas`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -85,6 +115,12 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `tareas`
 --
 ALTER TABLE `tareas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT de la tabla `tipo_tareas`
+--
+ALTER TABLE `tipo_tareas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
@@ -92,6 +128,16 @@ ALTER TABLE `tareas`
 --
 ALTER TABLE `usuarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `tareas`
+--
+ALTER TABLE `tareas`
+  ADD CONSTRAINT `fk_tareas_tipo_tareas` FOREIGN KEY (`id_tipo_tarea`) REFERENCES `tipo_tareas` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
